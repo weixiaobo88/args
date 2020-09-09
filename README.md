@@ -30,3 +30,37 @@
 4. value不能以-开头，如果以-开头，视作另一个参数的开始
 5. -与flag之间加空格报错, value中间有空格报错
 6. flag与value之间，flag之间可以有多空格
+
+#TODO 上下文：
+- 上下文1：分割字符串参数为多个部分，每个部分是(-flag value)
+    - 输入：字符串参数，形如"-l true -p 8080 -d /usr/logs"
+    - 输出：分割为flag和value的字符串列表，形如["-l true", "-p 8080","-d /usr/logs"] 
+- 上下文2：参照schema来将每个部分中的flag和value提取出来
+    - 有flag没有value的需要设置为默认值
+    - 没有flag没有value的需要设置为默认值
+    - 输入：flag和value的字符串列表，形如["-l true", "-p 8080","-d /usr/logs"]
+    - 输出：识别出的flag和value，形如[{flag: "l", value: true},{flag: "p", value: int},{flag: "d", value: "/usr/logs"}]
+- validation
+    - 上下文1的验证
+        - 字符串参数为空，报exception
+        - 字符串参数过长，实际传输时需要考虑，这里暂不考虑
+        - 字符串参数之间不用空格分割视为非法，比如-p-d，报exception
+    - 上下文2的验证
+        - 输入重复flag，报exception
+        - -与flag之间加空格报错, value中间有空格报错
+    - 合法性处理
+        - 整个字符串前后可以有空格，比如”    -l  true    ”
+        - value不能以-开头，如果以-开头，视作另一个参数的开始
+        - flag与value之间，flag之间可以有多空格   
+  
+#TODO 设计   
+- 将字符串变为结构化数据 =》 操作结构化数据    
+- 上下文1设计
+    - Parser(string input) 
+        - parse() => ["",""]
+- 上下文2设计    
+    - Schema([{flag, value}])
+    - Argument(flag, value)
+    - Formatter(["",""]) => List<Argument>
+    - Args(Schema, List<Argument>) => [{flag:value}]
+    
