@@ -59,8 +59,9 @@
     - Parser(string input) 
         - parse() => ["",""]
 - 上下文2设计    
-    - Schema([{flag, value}])
-    - Argument(flag, value)
+    - Schema([{flag, type}])
+    - SchemaElement(flag, type)
     - Formatter(["",""]) => List<Argument>
+    - Argument(flag, value)
     - Args(Schema, List<Argument>) => [{flag:value}]
     
