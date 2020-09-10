@@ -40,6 +40,9 @@
     - 没有flag没有value的需要设置为默认值
     - 输入：flag和value的字符串列表，形如["-l true", "-p 8080","-d /usr/logs"]
     - 输出：识别出的flag和value，形如[{flag: "l", value: true},{flag: "p", value: int},{flag: "d", value: "/usr/logs"}]
+- 上下文3：Schema parser
+    - 输入：string，形如"l:boolean,p:integer"   
+    - 输出：List<SchemaElement>，形如[{flag: "l", type: Boolean},{flag: "p", type: Integer}]
 - validation
     - 上下文1的验证
         - 字符串参数为空，报exception
