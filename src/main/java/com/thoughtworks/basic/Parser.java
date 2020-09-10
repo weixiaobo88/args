@@ -1,5 +1,7 @@
 package com.thoughtworks.basic;
 
+import com.thoughtworks.basic.exception.EmptyStringException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;

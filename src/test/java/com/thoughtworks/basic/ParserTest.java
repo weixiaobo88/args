@@ -1,5 +1,6 @@
 package com.thoughtworks.basic;
 
+import com.thoughtworks.basic.exception.EmptyStringException;
 import org.junit.Test;
 
 import java.util.List;
