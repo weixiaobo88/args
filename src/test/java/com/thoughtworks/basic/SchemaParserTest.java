@@ -24,16 +24,18 @@ public class SchemaParserTest {
     @Test
     public void should_return_parsed_schema_elements_when_parse_given_multiple_schema_string() {
         //given
-        SchemaParser schemaParser = new SchemaParser("l:boolean,p:integer");
+        SchemaParser schemaParser = new SchemaParser("l:boolean,p:integer,d:string");
 
         //when
         List<SchemaElement> schemaElements = schemaParser.parse();
 
         //then
-        assertEquals(2, schemaElements.size());
+        assertEquals(3, schemaElements.size());
         assertEquals("l", schemaElements.get(0).getFlag());
         assertEquals(Boolean.class, schemaElements.get(0).getType());
         assertEquals("p", schemaElements.get(1).getFlag());
         assertEquals(Integer.class, schemaElements.get(1).getType());
+        assertEquals("d", schemaElements.get(2).getFlag());
+        assertEquals(String.class, schemaElements.get(2).getType());
     }
 }
