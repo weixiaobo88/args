@@ -31,7 +31,42 @@
 5. -与flag之间加空格报错, value中间有空格报错
 6. flag与value之间，flag之间可以有多空格
 
-#TODO 上下文：
+## 代码结构
+
+1. Args
+```
+Args(Schema schema, Lexer lexer)
+ArgumentParser(schema)
+
+=> List<Argument>
+```
+1.1 词法分析Lexer
+```
+String: "-l true -p 8080 -d /usr/logs"
+
+=> List<String>: ["-l true","-p 8080","-d /usr/logs"]
+```
+1.2 语法分析ArgumentParser
+```
+List<String>: ["-l true","-p 8080","-d /usr/logs"]
+其中 "-l true"
+
+=> ["-l","true"]
+
+=> Argument(flag, value)
+```
+1.3 Schema
+```
+String: "l:boolean,p:integer,d:string"
+
+=> List<String>: ["l:boolean","p:integer","d:string"]
+
+=> List<SchemaElement>: SchemaElement(String flag, Object type)
+
+=> Schema: Set<SchemaElement>
+```
+
+## 上下文：
 - 上下文1：分割字符串参数为多个部分，每个部分是(-flag value)
     - 输入：字符串参数，形如"-l true -p 8080 -d /usr/logs"
     - 输出：分割为flag和value的字符串列表，形如["-l true", "-p 8080","-d /usr/logs"] 
@@ -56,7 +91,7 @@
         - value不能以-开头，如果以-开头，视作另一个参数的开始
         - flag与value之间，flag之间可以有多空格   
   
-#TODO 设计   
+## 设计   
 - 将字符串变为结构化数据 =》 操作结构化数据    
 - 上下文1设计
     - Parser(string input) 
@@ -67,4 +102,4 @@
     - Formatter(["",""]) => List<Argument>
     - Argument(flag, value)
     - Args(Schema, List<Argument>) => [{flag:value}]
-    
+        
