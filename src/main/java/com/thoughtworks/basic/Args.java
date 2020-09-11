@@ -12,18 +12,23 @@ public class Args {
         this.parser = parser;
     }
 
-    public List<Argument> analyze() {
-        List<String> parsedString = parser.parse();
+    List<Argument> analyze() {
         List<Argument> arguments = new ArrayList<>();
-        parsedString.forEach(item -> {
-            String[] split = item.split("\\s+");
-            String flag = split[0].substring(1);
-            String value = split[1];
-            arguments.add(new Argument(flag, parseValueBy(schema, flag, value)));
 
+        List<String> splitParts = parser.parse();
+
+        splitParts.forEach(part -> {
+            ArgumentTO argumentTO = pickArgumentTO(part);
+            arguments.add(generateArgument(argumentTO));
         });
 
         return arguments;
+    }
+
+    private Argument generateArgument(ArgumentTO argumentTO) {
+        String flag = argumentTO.getFlag();
+        String value = argumentTO.getValue();
+        return new Argument(flag, parseValueBy(schema, flag, value));
     }
 
     private Object parseValueBy(Schema schema, String flag, String value) {
@@ -38,5 +43,13 @@ public class Args {
         }
 
         return value;
+    }
+
+    private ArgumentTO pickArgumentTO(String item) {
+        String[] split = item.split("\\s+");
+        String flag = split[0].substring(1);
+        String value = split[1];
+
+        return new ArgumentTO(flag, value);
     }
 }
