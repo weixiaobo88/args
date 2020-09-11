@@ -43,18 +43,18 @@ ArgumentParser(schema)
 1.1 词法分析Lexer
 ```
 String: "-l true -p 8080 -d /usr/logs"
-
 => List<String>: ["-l true","-p 8080","-d /usr/logs"]
+=> List<ArgumentTO>
+ArgumentTO(String flag, String value)
 ```
+
 1.2 语法分析ArgumentParser
 ```
-List<String>: ["-l true","-p 8080","-d /usr/logs"]
-其中 "-l true"
-
-=> ["-l","true"]
-
-=> Argument(flag, value)
+List<ArgumentTO>
+=> List<Argument>
+Argument(String flag, Object value)
 ```
+
 1.3 Schema
 ```
 String: "l:boolean,p:integer,d:string"
@@ -67,29 +67,23 @@ String: "l:boolean,p:integer,d:string"
 ```
 
 2. 异常
+- 字符串为空
 - flag没有在Schema中定义
 - 输入的字符串中flag重复
-
-使用正则匹配可以忽略的异常：
-- 词法分析阶段：
-    - flag不是中线开始，"p 8080"
--  语法分析阶段：
-    - flag是多个字符，"-pp 8080"
-    - value中间有空格，"-p 80 80"
-    - flag重复"-p 8080 -p true"
 - schema的flag重复
 
 词法分析中会涉及的异常：
 - 字符串为空
-- trim后的字符串不以"-"开始
+- trim后的字符串不以"-"开始(使用正则匹配可以忽略的异常)
+- flag重复"-p 8080 -p true"
 
 语法分析中会涉及的异常：
 - flag没有定义
-- flag不是一个字符，是多个字符
-- value中间有空格
+- flag不是一个字符，是多个字符(使用正则匹配可以忽略的异常)
+- value中间有空格(使用正则匹配可以忽略的异常)
 
 schema定义的异常
-- schema中有重复的flag
+- schema中有重复的flag(使用Set的数据结构可以忽略)
 
 ---------------------------------------------------
 ---------------------------------------------------
