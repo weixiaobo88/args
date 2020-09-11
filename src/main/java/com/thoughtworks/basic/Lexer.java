@@ -8,25 +8,56 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-    List<String> parse(String source) {
-        if (source.isEmpty() || source.trim().isEmpty()) {
+    List<ArgumentTO> scan(String source) {
+        if (isEmpty(source)) {
             throw new EmptyStringException();
         }
 
-        return parseNonEmptyString(source);
+        return scanNonEmptyString(source);
     }
 
-    private List<String> parseNonEmptyString(String source) {
+    private boolean isEmpty(String source) {
+        return source.isEmpty() || source.trim().isEmpty();
+    }
+
+    private List<ArgumentTO> scanNonEmptyString(String source) {
+        List<String> pairs = breakupToPairs(source);
+        return transformToArgumentTOs(pairs);
+    }
+
+    private List<String> breakupToPairs(String source) {
         String PARSE_REGEX = "(?:\\-[a-zA-Z]\\s+[^\\-]\\S+)|(?:\\-[a-zA-Z]\\s+)";
-        List<String> splitParts = new ArrayList<>();
+        List<String> pairs = new ArrayList<>();
 
         Matcher matcher = Pattern.compile(PARSE_REGEX)
                 .matcher(source);
 
         while (matcher.find()) {
-            splitParts.add(matcher.group().trim());
+            pairs.add(matcher.group().trim());
         }
 
-        return splitParts;
+        return pairs;
+    }
+
+    private List<ArgumentTO> transformToArgumentTOs(List<String> pairs) {
+        List<ArgumentTO> argumentTOs = new ArrayList<>();
+
+        pairs.forEach(pair -> argumentTOs.add(pickArgumentTO(pair)));
+
+        return argumentTOs;
+    }
+
+    private ArgumentTO pickArgumentTO(String pair) {
+        String[] split = pair.split("\\s+");
+        String flag = split[0].substring(1);
+
+        if (split.length > 1) {
+            String value = split[1];
+
+            return new ArgumentTO(flag, value);
+        }
+
+        String defaultValue = "";
+        return new ArgumentTO(flag, defaultValue);
     }
 }

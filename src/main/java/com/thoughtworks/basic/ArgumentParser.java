@@ -12,11 +12,10 @@ class ArgumentParser {
         this.schema = schema;
     }
 
-    List<Argument> parse(List<String> splitParts) {
+    List<Argument> parse(List<ArgumentTO> argumentTOs) {
         List<Argument> arguments = new ArrayList<>();
 
-        splitParts.forEach(part -> {
-            ArgumentTO argumentTO = pickArgumentTO(part);
+        argumentTOs.forEach(argumentTO -> {
             Argument argument = generateArgument(argumentTO);
             validateArgument(arguments, argument);
             arguments.add(argument);
@@ -32,20 +31,6 @@ class ArgumentParser {
         if (existSameFlag) {
             throw new FlagDuplicationException();
         }
-    }
-
-    private ArgumentTO pickArgumentTO(String part) {
-        String[] split = part.split("\\s+");
-        String flag = split[0].substring(1);
-
-        if (split.length > 1) {
-            String value = split[1];
-
-            return new ArgumentTO(flag, value);
-        }
-
-        String defaultValue = "";
-        return new ArgumentTO(flag, defaultValue);
     }
 
     private Argument generateArgument(ArgumentTO argumentTO) {
