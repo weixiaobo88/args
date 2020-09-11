@@ -21,8 +21,8 @@ class ArgumentParser {
         return arguments;
     }
 
-    private ArgumentTO pickArgumentTO(String item) {
-        String[] split = item.split("\\s+");
+    private ArgumentTO pickArgumentTO(String part) {
+        String[] split = part.split("\\s+");
         String flag = split[0].substring(1);
 
         if (split.length > 1) {
