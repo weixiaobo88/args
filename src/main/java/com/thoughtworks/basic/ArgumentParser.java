@@ -51,10 +51,10 @@ class ArgumentParser {
     private Argument generateArgument(ArgumentTO argumentTO) {
         String flag = argumentTO.getFlag();
         String value = argumentTO.getValue();
-        return new Argument(flag, parseValueBy(schema, flag, value));
+        return new Argument(flag, parseValueType(schema, flag, value));
     }
 
-    private Object parseValueBy(Schema schema, String flag, String value) {
+    private Object parseValueType(Schema schema, String flag, String value) {
         Object flagType = schema.getFlagType(flag);
 
         if (flagType.equals(Boolean.class)) {
