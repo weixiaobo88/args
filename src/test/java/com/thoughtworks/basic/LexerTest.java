@@ -7,14 +7,14 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class LexicalParserTest {
+public class LexerTest {
     @Test
     public void should_return_list_with_one_element_when_parse_given_one_flag_value() {
         //given
-        LexicalParser lexicalParser = new LexicalParser("-l true");
+        Lexer lexer = new Lexer("-l true");
 
         //when
-        List<String> result = lexicalParser.parse();
+        List<String> result = lexer.parse();
 
         //then
         assertEquals(1, result.size());
@@ -24,10 +24,10 @@ public class LexicalParserTest {
     @Test
     public void should_return_list_with_multiple_elements_when_parse_given_multiple_flag_value() {
         //given
-        LexicalParser lexicalParser = new LexicalParser("-l true -p 8080 -d /usr/logs");
+        Lexer lexer = new Lexer("-l true -p 8080 -d /usr/logs");
 
         //when
-        List<String> result = lexicalParser.parse();
+        List<String> result = lexer.parse();
 
         //then
         assertEquals(3, result.size());
@@ -39,10 +39,10 @@ public class LexicalParserTest {
     @Test
     public void should_return_list_with_multiple_elements_when_parse_given_flag_with_value_is_empty() {
         //given
-        LexicalParser lexicalParser = new LexicalParser("-l -p 8080 -d /usr/logs");
+        Lexer lexer = new Lexer("-l -p 8080 -d /usr/logs");
 
         //when
-        List<String> result = lexicalParser.parse();
+        List<String> result = lexer.parse();
 
         //then
         assertEquals(3, result.size());
@@ -54,10 +54,10 @@ public class LexicalParserTest {
     @Test
     public void should_return_list_when_parse_given_flag_value_with_empty_space_between() {
         //given
-        LexicalParser lexicalParser = new LexicalParser("    -l  true ");
+        Lexer lexer = new Lexer("    -l  true ");
 
         //when
-        List<String> result = lexicalParser.parse();
+        List<String> result = lexer.parse();
 
         //then
         assertEquals(1, result.size());
@@ -67,10 +67,10 @@ public class LexicalParserTest {
     @Test
     public void should_return_list_when_parse_given_flag_value_with_empty_space_at_start_and_end() {
         //given
-        LexicalParser lexicalParser = new LexicalParser("    -l  true ");
+        Lexer lexer = new Lexer("    -l  true ");
 
         //when
-        List<String> result = lexicalParser.parse();
+        List<String> result = lexer.parse();
 
         //then
         assertEquals(1, result.size());
@@ -80,9 +80,9 @@ public class LexicalParserTest {
     @Test(expected = EmptyStringException.class)
     public void should_throw_exception_when_parse_given_empty_string() {
         //given
-        LexicalParser lexicalParser = new LexicalParser(" ");
+        Lexer lexer = new Lexer(" ");
 
         //when
-        lexicalParser.parse();
+        lexer.parse();
     }
 }
