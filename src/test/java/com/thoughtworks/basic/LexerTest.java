@@ -1,6 +1,6 @@
 package com.thoughtworks.basic;
 
-import com.thoughtworks.basic.exception.EmptyStringException;
+import com.thoughtworks.basic.exception.InvalidInputCommandException;
 import org.junit.Test;
 
 import java.util.List;
@@ -78,7 +78,7 @@ public class LexerTest {
         assertEquals("true", argumentTOs.get(0).getValue());
     }
 
-    @Test(expected = EmptyStringException.class)
+    @Test(expected = InvalidInputCommandException.class)
     public void should_throw_exception_when_parse_given_empty_string() {
         //given
         String source = " ";

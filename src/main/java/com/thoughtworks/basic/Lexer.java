@@ -1,6 +1,6 @@
 package com.thoughtworks.basic;
 
-import com.thoughtworks.basic.exception.EmptyStringException;
+import com.thoughtworks.basic.exception.InvalidInputCommandException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class Lexer {
     List<ArgumentTO> scan(String source) {
         if (isEmpty(source)) {
-            throw new EmptyStringException();
+            throw new InvalidInputCommandException();
         }
 
         return scanNonEmptyString(source);
