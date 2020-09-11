@@ -12,4 +12,8 @@ public class Argument {
     public Object getValue() {
         return value;
     }
+
+    public String getFlag() {
+        return flag;
+    }
 }

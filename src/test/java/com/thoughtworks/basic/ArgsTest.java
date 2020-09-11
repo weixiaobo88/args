@@ -1,5 +1,6 @@
 package com.thoughtworks.basic;
 
+import com.thoughtworks.basic.exception.FlagDuplicationException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,5 +47,11 @@ public class ArgsTest {
         assertEquals(false, arguments.get(0).getValue());
         assertEquals(8080, arguments.get(1).getValue());
         assertEquals("/usr/logs", arguments.get(2).getValue());
+    }
+
+    @Test(expected = FlagDuplicationException.class)
+    public void should_throw_flag_duplication_exception_when_analyze_given_schema_and_parsed_string_with_duplicated_flag() {
+        //when
+        args.analyze("-p 8080 -p 2020");
     }
 }
