@@ -6,7 +6,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class SchemaParserTest {
+public class SchemaLexicalParserTest {
     @Test
     public void should_return_parsed_schema_element_when_parse_given_one_schema_string() {
         //given

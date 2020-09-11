@@ -5,17 +5,17 @@ import java.util.List;
 
 public class Args {
     private final Schema schema;
-    private Parser parser;
+    private LexicalParser lexicalParser;
 
-    public Args(Schema schema, Parser parser) {
+    public Args(Schema schema, LexicalParser lexicalParser) {
         this.schema = schema;
-        this.parser = parser;
+        this.lexicalParser = lexicalParser;
     }
 
     List<Argument> analyze() {
         List<Argument> arguments = new ArrayList<>();
 
-        List<String> splitParts = parser.parse();
+        List<String> splitParts = lexicalParser.parse();
 
         splitParts.forEach(part -> {
             ArgumentTO argumentTO = pickArgumentTO(part);

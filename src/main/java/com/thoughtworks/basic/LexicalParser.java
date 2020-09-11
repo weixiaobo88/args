@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Parser {
+public class LexicalParser {
     private String source;
 
-    public Parser(String source) {
+    public LexicalParser(String source) {
         this.source = source;
     }
 

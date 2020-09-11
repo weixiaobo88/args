@@ -17,8 +17,8 @@ public class ArgsTest {
         schemaElements.add(new SchemaElement("p", Integer.class));
         schemaElements.add(new SchemaElement("d", String.class));
         Schema schema = new Schema(schemaElements);
-        Parser parser = new Parser("-l true -p 8080 -d /usr/logs");
-        Args args = new Args(schema, parser);
+        LexicalParser lexicalParser = new LexicalParser("-l true -p 8080 -d /usr/logs");
+        Args args = new Args(schema, lexicalParser);
 
         //when
         List<Argument> arguments =  args.analyze();
@@ -38,8 +38,8 @@ public class ArgsTest {
         schemaElements.add(new SchemaElement("p", Integer.class));
         schemaElements.add(new SchemaElement("d", String.class));
         Schema schema = new Schema(schemaElements);
-        Parser parser = new Parser("-l -p 8080 -d /usr/logs");
-        Args args = new Args(schema, parser);
+        LexicalParser lexicalParser = new LexicalParser("-l -p 8080 -d /usr/logs");
+        Args args = new Args(schema, lexicalParser);
 
         //when
         List<Argument> arguments =  args.analyze();
