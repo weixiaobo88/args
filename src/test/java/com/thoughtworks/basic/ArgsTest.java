@@ -46,7 +46,7 @@ public class ArgsTest {
 
         //then
         assertEquals(3, arguments.size());
-        assertEquals(true, arguments.get(0).getValue());
+        assertEquals(false, arguments.get(0).getValue());
         assertEquals(8080, arguments.get(1).getValue());
         assertEquals("/usr/logs", arguments.get(2).getValue());
     }

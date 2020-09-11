@@ -48,8 +48,14 @@ public class Args {
     private ArgumentTO pickArgumentTO(String item) {
         String[] split = item.split("\\s+");
         String flag = split[0].substring(1);
-        String value = split[1];
 
-        return new ArgumentTO(flag, value);
+        if (split.length > 1) {
+            String value = split[1];
+
+            return new ArgumentTO(flag, value);
+        }
+
+        String defaultValue = "";
+        return new ArgumentTO(flag, defaultValue);
     }
 }

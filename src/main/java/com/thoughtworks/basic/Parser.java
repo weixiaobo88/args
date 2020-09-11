@@ -23,14 +23,14 @@ public class Parser {
     }
 
     private List<String> parseNonEmptyString() {
-        String PARSE_REGEX = "\\-[a-zA-Z]\\s+\\S+";
+        String PARSE_REGEX = "(?:\\-[a-zA-Z]\\s+[^\\-]\\S+)|(?:\\-[a-zA-Z]\\s+)";
         List<String> splitParts = new ArrayList<>();
 
         Matcher matcher = Pattern.compile(PARSE_REGEX)
                 .matcher(source);
 
         while (matcher.find()) {
-            splitParts.add(matcher.group());
+            splitParts.add(matcher.group().trim());
         }
 
         return splitParts;
