@@ -1,5 +1,6 @@
 package com.thoughtworks.basic;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -9,19 +10,24 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 public class ArgsTest {
-    @Test
-    public void should_return_type_when_analyze_given_schema_and_parsed_string() {
+    private Args args;
+
+    @Before
+    public void setUp() {
         //given
         Set<SchemaElement> schemaElements = new HashSet<>();
         schemaElements.add(new SchemaElement("l", Boolean.class));
         schemaElements.add(new SchemaElement("p", Integer.class));
         schemaElements.add(new SchemaElement("d", String.class));
         Schema schema = new Schema(schemaElements);
-        Lexer lexer = new Lexer("-l true -p 8080 -d /usr/logs");
-        Args args = new Args(schema, lexer);
+        Lexer lexer = new Lexer();
+        args = new Args(schema, lexer);
+    }
 
+    @Test
+    public void should_return_type_when_analyze_given_schema_and_parsed_string() {
         //when
-        List<Argument> arguments =  args.analyze();
+        List<Argument> arguments =  args.analyze("-l true -p 8080 -d /usr/logs");
 
         //then
         assertEquals(3, arguments.size());
@@ -32,17 +38,8 @@ public class ArgsTest {
 
     @Test
     public void should_return_default_type_when_analyze_given_schema_and_parsed_string_without_type() {
-        //given
-        Set<SchemaElement> schemaElements = new HashSet<>();
-        schemaElements.add(new SchemaElement("l", Boolean.class));
-        schemaElements.add(new SchemaElement("p", Integer.class));
-        schemaElements.add(new SchemaElement("d", String.class));
-        Schema schema = new Schema(schemaElements);
-        Lexer lexer = new Lexer("-l -p 8080 -d /usr/logs");
-        Args args = new Args(schema, lexer);
-
         //when
-        List<Argument> arguments =  args.analyze();
+        List<Argument> arguments =  args.analyze("-l -p 8080 -d /usr/logs");
 
         //then
         assertEquals(3, arguments.size());

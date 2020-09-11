@@ -8,21 +8,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-    private String source;
-
-    public Lexer(String source) {
-        this.source = source;
-    }
-
-    List<String> parse() {
+    List<String> parse(String source) {
         if (source.isEmpty() || source.trim().isEmpty()) {
             throw new EmptyStringException();
         }
 
-        return parseNonEmptyString();
+        return parseNonEmptyString(source);
     }
 
-    private List<String> parseNonEmptyString() {
+    private List<String> parseNonEmptyString(String source) {
         String PARSE_REGEX = "(?:\\-[a-zA-Z]\\s+[^\\-]\\S+)|(?:\\-[a-zA-Z]\\s+)";
         List<String> splitParts = new ArrayList<>();
 

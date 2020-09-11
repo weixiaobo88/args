@@ -11,8 +11,8 @@ public class Args {
         argumentParser = new ArgumentParser(schema);
     }
 
-    List<Argument> analyze() {
-        List<String> splitParts = lexer.parse();
+    List<Argument> analyze(String inputCommand) {
+        List<String> splitParts = lexer.parse(inputCommand);
 
         return argumentParser.parse(splitParts);
     }
