@@ -18,7 +18,7 @@ class ArgumentParser {
         List<Argument> argumentsWithDefaultValue = schema.assignDefault(argumentsFromKeyValuePairs);
 
         return Stream.concat(argumentsFromKeyValuePairs.stream(), argumentsWithDefaultValue.stream())
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     private List<Argument> parseKeyValuePairs(Schema schema, Map<String, String> keyValuePairs) {
@@ -41,14 +41,8 @@ class ArgumentParser {
 
     private Object parseValue(Schema schema, String flag, String value) {
         String flagType = schema.getTypeOf(flag);
-
-        switch (flagType) {
-            case "boolean":
-                return Boolean.parseBoolean(value);
-            case "integer":
-                return Integer.parseInt(value);
-            default:
-                return value;
-        }
+        ValueFactory factory = new ValueFactory();
+        ValueHandler valueHandler = factory.create(flagType);
+        return valueHandler.handle(value);
     }
 }
