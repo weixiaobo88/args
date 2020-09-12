@@ -61,7 +61,7 @@ String: "l:boolean,p:integer,d:string"
 
 => List<String>: ["l:boolean","p:integer","d:string"]
 
-=> List<SchemaElement>: SchemaElement(String flag, Object type)
+=> List<SchemaElement>: SchemaElement(String flag, Object valueType)
 
 => Schema: Set<SchemaElement>
 ```
@@ -99,7 +99,7 @@ schema定义的异常
     - 输出：识别出的flag和value，形如[{flag: "l", value: true},{flag: "p", value: int},{flag: "d", value: "/usr/logs"}]
 - 上下文3：Schema parser
     - 输入：string，形如"l:boolean,p:integer"   
-    - 输出：List<SchemaElement>，形如[{flag: "l", type: Boolean},{flag: "p", type: Integer}]
+    - 输出：List<SchemaElement>，形如[{flag: "l", valueType: Boolean},{flag: "p", valueType: Integer}]
 - validation
     - 上下文1的验证
         - 字符串参数为空，报exception
@@ -119,8 +119,8 @@ schema定义的异常
     - Parser(string input) 
         - parse() => ["",""]
 - 上下文2设计    
-    - Schema([{flag, type}])
-    - SchemaElement(flag, type)
+    - Schema([{flag, valueType}])
+    - SchemaElement(flag, valueType)
     - Formatter(["",""]) => List<Argument>
     - Argument(flag, value)
     - Args(Schema, List<Argument>) => [{flag:value}]

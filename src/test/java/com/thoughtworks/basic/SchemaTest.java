@@ -12,30 +12,17 @@ public class SchemaTest {
     @Test
     public void should_return_flag_type_when_get_flag_type_given_schema() {
         //given
-        Set<SchemaElement> schemaElements = new HashSet<>();
-        schemaElements.add(new SchemaElement("l", Boolean.class));
-        schemaElements.add(new SchemaElement("p", Integer.class));
-        schemaElements.add(new SchemaElement("d", String.class));
-        Schema schema = new Schema(schemaElements);
+        Set<SchemaDefinition> schemaDefinitions = new HashSet<>();
+        schemaDefinitions.add(new SchemaDefinition("l", ValueType.BOOLEAN));
+        schemaDefinitions.add(new SchemaDefinition("p", ValueType.INTEGER));
+        schemaDefinitions.add(new SchemaDefinition("d", ValueType.STRING));
+        Schema schema = new Schema(schemaDefinitions);
 
         //when
 
         //then
-        assertEquals(Boolean.class, schema.getFlagType("l"));
-        assertEquals(Integer.class, schema.getFlagType("p"));
-        assertEquals(String.class, schema.getFlagType("d"));
-    }
-
-    @Test(expected = FlagNotDefinedException.class)
-    public void should_throw_exception_when_get_flag_type_given_flag_not_exist_in_schema_definition() {
-        //given
-        Set<SchemaElement> schemaElements = new HashSet<>();
-        schemaElements.add(new SchemaElement("l", Boolean.class));
-        Schema schema = new Schema(schemaElements);
-
-        //when
-
-        //then
-        schema.getFlagType("p");
+        assertEquals("boolean", schema.getTypeOf("l"));
+        assertEquals("integer", schema.getTypeOf("p"));
+        assertEquals("string", schema.getTypeOf("d"));
     }
 }

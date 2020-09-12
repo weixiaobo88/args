@@ -1,9 +1,8 @@
 package com.thoughtworks.basic;
 
-import com.thoughtworks.basic.exception.FlagDuplicationException;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class ArgumentParser {
     private Schema schema;
@@ -12,44 +11,35 @@ class ArgumentParser {
         this.schema = schema;
     }
 
-    List<Argument> parse(List<ArgumentTO> argumentTOs) {
+    List<Argument> parse(Map<String, String> keyValuePairs) {
         List<Argument> arguments = new ArrayList<>();
 
-        argumentTOs.forEach(argumentTO -> {
-            Argument argument = generateArgument(argumentTO);
-            validateArgument(arguments, argument);
+        for (Map.Entry<String, String> keyValuePair : keyValuePairs.entrySet()) {
+            String key = keyValuePair.getKey();
+            String value = keyValuePair.getValue();
+
+            Argument argument = generateArgument(key, value);
+
             arguments.add(argument);
-        });
+        }
 
         return arguments;
     }
 
-    private void validateArgument(List<Argument> arguments, Argument argument) {
-        boolean existSameFlag = arguments.stream()
-                .anyMatch(existedArgument -> existedArgument.getFlag().equals(argument.getFlag()));
-
-        if (existSameFlag) {
-            throw new FlagDuplicationException();
-        }
+    private Argument generateArgument(String flag, String value) {
+        return new Argument(flag, parseValue(schema, flag, value));
     }
 
-    private Argument generateArgument(ArgumentTO argumentTO) {
-        String flag = argumentTO.getFlag();
-        String value = argumentTO.getValue();
-        return new Argument(flag, parseValueType(schema, flag, value));
-    }
+    private Object parseValue(Schema schema, String flag, String value) {
+        String flagType = schema.getTypeOf(flag);
 
-    private Object parseValueType(Schema schema, String flag, String value) {
-        Object flagType = schema.getFlagType(flag);
-
-        if (flagType.equals(Boolean.class)) {
-            return Boolean.parseBoolean(value);
+        switch (flagType) {
+            case "boolean":
+                return Boolean.parseBoolean(value);
+            case "integer":
+                return Integer.parseInt(value);
+            default:
+                return value;
         }
-
-        if (flagType.equals(Integer.class)) {
-            return Integer.parseInt(value);
-        }
-
-        return value;
     }
 }

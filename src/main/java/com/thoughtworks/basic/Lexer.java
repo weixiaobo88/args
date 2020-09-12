@@ -1,16 +1,15 @@
 package com.thoughtworks.basic;
 
-import com.thoughtworks.basic.exception.InvalidInputCommandException;
+import com.thoughtworks.basic.exception.InvalidInputException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-    List<ArgumentTO> scan(String source) {
+    Map<String, String> scan(String source) {
         if (isEmpty(source)) {
-            throw new InvalidInputCommandException();
+            throw new InvalidInputException();
         }
 
         return scanNonEmptyString(source);
@@ -20,9 +19,10 @@ public class Lexer {
         return source.isEmpty() || source.trim().isEmpty();
     }
 
-    private List<ArgumentTO> scanNonEmptyString(String source) {
+    private Map<String, String> scanNonEmptyString(String source) {
         List<String> pairs = breakupToPairs(source);
-        return transformToArgumentTOs(pairs);
+
+        return transformToMap(pairs);
     }
 
     private List<String> breakupToPairs(String source) {
@@ -39,25 +39,30 @@ public class Lexer {
         return pairs;
     }
 
-    private List<ArgumentTO> transformToArgumentTOs(List<String> pairs) {
-        List<ArgumentTO> argumentTOs = new ArrayList<>();
+    private Map<String, String> transformToMap(List<String> pairs) {
+        Map<String, String> keyValuePairs = new LinkedHashMap<>();
 
-        pairs.forEach(pair -> argumentTOs.add(pickArgumentTO(pair)));
+        pairs.forEach(pair -> {
+            String[] keyAndValue = splitToKeyAndValue(pair);
+            keyValuePairs.put(pickKey(keyAndValue), pickValue(keyAndValue));
+        });
 
-        return argumentTOs;
+        return keyValuePairs;
     }
 
-    private ArgumentTO pickArgumentTO(String pair) {
-        String[] split = pair.split("\\s+");
-        String flag = split[0].substring(1);
+    private String pickKey(String[] keyAndValue) {
+        return keyAndValue[0].substring(1);
+    }
 
-        if (split.length > 1) {
-            String value = split[1];
-
-            return new ArgumentTO(flag, value);
+    private String pickValue(String[] keyAndValue) {
+        if (keyAndValue.length > 1) {
+            return keyAndValue[1];
         }
 
-        String defaultValue = "";
-        return new ArgumentTO(flag, defaultValue);
+        return "";
+    }
+
+    private String[] splitToKeyAndValue(String pair) {
+        return pair.split("\\s+");
     }
 }

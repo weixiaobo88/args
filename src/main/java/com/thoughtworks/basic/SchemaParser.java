@@ -1,46 +1,42 @@
 package com.thoughtworks.basic;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-//Args里直接用了结构化的Schema，没有使用SchemaParser
 public class SchemaParser {
-    private String inputSchema;
+    private String schemaText;
 
-    SchemaParser(String inputSchema) {
-        this.inputSchema = inputSchema;
+    SchemaParser(String schemaText) {
+        this.schemaText = schemaText;
     }
 
-    List<SchemaElement> parse() {
-        String SCHEMA_DELIMITER = ",";
-        String[] split = inputSchema.split(SCHEMA_DELIMITER);
+    Set<SchemaDefinition> parse() {
+        String SCHEMA_DELIMITER = " ";
+        String[] split = schemaText.split(SCHEMA_DELIMITER);
 
-        List<SchemaElement> schemaElements = new ArrayList<>();
+        Set<SchemaDefinition> schemaDefinitions = new HashSet<>();
         Arrays.asList(split)
-                .forEach(schema -> schemaElements.add(parseSchemaElement(schema)));
+                .forEach(schema -> schemaDefinitions.add(parseSchemaElement(schema)));
 
-        return schemaElements;
+        return schemaDefinitions;
     }
 
-    private SchemaElement parseSchemaElement(String schema) {
+    private SchemaDefinition parseSchemaElement(String schema) {
         String SCHEMA_ELEMENT_DELIMITER = ":";
         String[] split = schema.split(SCHEMA_ELEMENT_DELIMITER);
         String flag = split[0];
         String type = split[1];
 
-        return new SchemaElement(flag, findMatchedTypeBy(type));
+        return new SchemaDefinition(flag, findMatchedTypeBy(type));
     }
 
-    private Object findMatchedTypeBy(String type) {
-        if ("boolean".equalsIgnoreCase(type)) {
-            return Boolean.class;
+    private ValueType findMatchedTypeBy(String type) {
+        switch (type) {
+            case "boolean":
+                return ValueType.BOOLEAN;
+            case "integer":
+                return ValueType.INTEGER;
+            default:
+                return ValueType.STRING;
         }
-
-        if ("integer".equalsIgnoreCase(type)) {
-            return Integer.class;
-        }
-
-        return String.class;
     }
 }

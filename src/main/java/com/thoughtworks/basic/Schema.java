@@ -2,32 +2,21 @@ package com.thoughtworks.basic;
 
 import com.thoughtworks.basic.exception.FlagNotDefinedException;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Schema {
-    private Set<SchemaElement> schemaElements;
+    private Set<SchemaDefinition> schemaDefinitions;
 
-    public Schema(Set<SchemaElement> schemaElements) {
-        this.schemaElements = schemaElements;
+    public Schema(Set<SchemaDefinition> schemaDefinitions) {
+        this.schemaDefinitions = schemaDefinitions;
     }
 
-    Object getFlagType(String flag) {
-        List<SchemaElement> elementsByFlag = findElementByFlag(flag);
-        boolean flagNotExist = elementsByFlag.size() == 0;
-
-        if (flagNotExist) {
-            throw new FlagNotDefinedException();
-        }
-
-        SchemaElement matchedElement = elementsByFlag.get(0);
-        return matchedElement.getType();
-    }
-
-    private List<SchemaElement> findElementByFlag(String flag) {
-        return schemaElements.stream()
+    String getTypeOf(String flag) {
+        return schemaDefinitions.stream()
                 .filter(element -> element.getFlag().equals(flag))
-                .collect(Collectors.toList());
+                .findFirst()
+                .orElseThrow(FlagNotDefinedException::new)
+                .getType();
     }
+
 }

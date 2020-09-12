@@ -3,27 +3,13 @@ package com.thoughtworks.basic;
 import java.util.List;
 
 public class Args {
-    private final String inputCommand;
-    private ArgumentParser argumentParser;
+    private List<Argument> arguments;
 
-    public Args(Schema schema, String inputCommand) {
-        this.inputCommand = inputCommand;
-        argumentParser = new ArgumentParser(schema);
+    public Args(List<Argument> arguments) {
+        this.arguments = arguments;
     }
 
-    private List<Argument> analyze(String inputCommand) {
-        List<ArgumentTO> argumentTOs = new Lexer().scan(inputCommand);
-
-        return argumentParser.parse(argumentTOs);
-    }
-
-    public Object getValueOf(String flag) {
-        List<Argument> arguments = analyze(inputCommand);
-
-        return pickValueByFlag(flag, arguments);
-    }
-
-    private Object pickValueByFlag(String flag, List<Argument> arguments) {
+    Object getValueOf(String flag) {
         return arguments.stream()
                 .filter(argument -> argument.getFlag().equalsIgnoreCase(flag))
                 .findFirst()
