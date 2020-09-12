@@ -75,7 +75,7 @@ String: "l:boolean,p:integer,d:string"
 词法分析中会涉及的异常：
 - 字符串为空
 - trim后的字符串不以"-"开始(使用正则匹配可以忽略的异常)
-- flag重复"-p 8080 -p true"
+- flag重复"-p 8080 -p true"(使用Map不会出现这种情况)
 
 语法分析中会涉及的异常：
 - flag没有定义
