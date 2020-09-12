@@ -2,6 +2,8 @@ package com.thoughtworks.basic;
 
 import com.thoughtworks.basic.exception.FlagNotDefinedException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Schema {
@@ -19,4 +21,15 @@ public class Schema {
                 .getType();
     }
 
+    public List<Argument> assignDefault(List<Argument> arguments) {
+        List<Argument> argumentsWithDefaultValue = new ArrayList<>();
+
+        schemaDefinitions.forEach(definition -> {
+            if (arguments.stream().noneMatch(argument -> argument.instanceOf(definition))) {
+                argumentsWithDefaultValue.add(new Argument(definition.getFlag(), definition.getDefaultValue()));
+            }
+        });
+
+        return argumentsWithDefaultValue;
+    }
 }

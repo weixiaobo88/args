@@ -9,11 +9,15 @@ public class Argument {
         this.value = value;
     }
 
-    public Object getValue() {
+    Object getValue() {
         return value;
     }
 
-    public String getFlag() {
+    String getFlag() {
         return flag;
+    }
+
+    boolean instanceOf(SchemaDefinition schemaDefinition) {
+        return schemaDefinition.isMatch(this.flag);
     }
 }

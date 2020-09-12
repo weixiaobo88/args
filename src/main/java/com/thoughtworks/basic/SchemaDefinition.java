@@ -6,7 +6,7 @@ public class SchemaDefinition {
     private final String flag;
     private final ValueType valueType;
 
-    public SchemaDefinition(String flag, ValueType valueType) {
+    SchemaDefinition(String flag, ValueType valueType) {
         this.flag = flag;
         this.valueType = valueType;
     }
@@ -19,8 +19,12 @@ public class SchemaDefinition {
         return valueType.getType();
     }
 
-    public Object getDefaultValue() {
+    Object getDefaultValue() {
         return valueType.getDefaultValue();
+    }
+
+    boolean isMatch(String flag) {
+        return this.flag.equals(flag);
     }
 
     @Override
